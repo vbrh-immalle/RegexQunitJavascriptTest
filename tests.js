@@ -67,3 +67,29 @@ QUnit.test("Http[s]?://", function(assert) {
     assert.equal(re.exec(str), exc, "Execution of regexp return " + exc);
 });
 
+QUnit.test("Should catch Github username", function(assert) {
+    var re = /http[s]?:\/\/github\.com\/(\w+)/;
+    var str = "http://github.com/testuser";
+    var exc = "http://github.com/testuser";
+    var usr = "testuser";
+
+    var resultArray = re.exec(str);
+
+    assert.equal(resultArray[0], exc, "Execution of regexp returns " + exc);
+    assert.equal(resultArray[1], usr, "Username is parsed correctly as " + usr);
+});
+
+QUnit.test("Should catch Github username containing dashs and numbers", function(assert) {
+    var re = /http[s]?:\/\/github\.com\/([\w-]+)/;
+    var str = "http://github.com/3test-user";
+    var exc = "http://github.com/3test-user";
+    var usr = "3test-user";
+
+    var resultArray = re.exec(str);
+
+    assert.equal(resultArray[0], exc, "Execution of regexp returns " + exc);
+    assert.equal(resultArray[1], usr, "Username is parsed correctly as " + usr);
+
+    // NOTE: only single hyphens are allowed (https://github.com/regexhq/regex-username)
+});
+
